@@ -1,0 +1,136 @@
+p {
+      margin: 0;
+      margin-block: 0;
+      font-family: 'Poppins';
+}
+a {
+      text-decoration: none;
+      color: white;
+      font-family: 'Poppins';
+}
+h1, h2, h3, h4, h5, h6 {
+      font-family: 'Poppins';
+}
+
+.active {
+      color: red !important;
+}
+#banner .page-banner {
+      height: 50vh;
+      width: 100vw;
+      background-image: url(/assets/image/banner-option-2.png);
+      background-position: center;
+      box-shadow: 10px 10px 5px #aaaa;
+}
+
+#banner .page-banner-title p {
+      color: #12bc00;
+      text-transform: uppercase;
+      font-size: clamp(2rem, 10vw, 3.25rem);
+      font-weight: 400;
+      font-family: 'Poppins', sans-serif;
+}
+
+#main.main {
+      margin-top: 45px;
+      margin-bottom: 45px;
+}
+
+#main .card {
+      margin-bottom: 20px;
+}
+
+#footer .footer-logo-site {
+      max-width: 160px;
+      margin-right: 45px;
+}
+#footer .footer-logo-site img {
+      border-radius: 50%;
+}
+
+#footer .footer-title-site {
+      font-family: 'Poppins';
+      color: white;
+}
+#footer .footer-title-site .main-title {
+      font-size: clamp(1rem, 5vw, 3rem);
+      text-transform: uppercase;
+      font-weight: 400;
+}
+#footer .footer-title-site .sub-title {
+      font-size: clamp(0.5rem, 2vw, 1rem);
+      font-style: italic;
+      font-weight: 300;
+}
+
+
+#main-all-product.main-all-product,
+#main-add-product.main-add-product {
+      margin-top: 90px;
+      margin-bottom: 90px;
+}
+
+#main-all-product .products-list,
+#main-add-product .add-product-form {
+      margin-top: 30px;
+}
+
+#main-login-form.main-login-form {
+      height: 100vh;
+      width: 100vw;
+      background-image: url(/assets/image/background-login-form.png);
+      background-position: center;
+      position: relative;
+}
+
+#main-login-form .login-form {
+      position: absolute;
+      width: 380px;
+      height: 420px;
+      top: 12%;
+      left: 37%;
+      background-color: white;
+      padding: 35px 35px;
+      box-shadow: 5px 10px 5px #aaaa;
+      border-left: 2px solid #aaaa;
+      border-top: 2px solid #aaaa;
+}
+
+#main-login-form .login-form-logo,
+#main-register-form .register-form-logo {
+      display: flex;
+      margin-bottom: 20px;
+      align-items: center;
+}
+#main-login-form .login-form-logo img,
+#main-register-form .register-form-logo img {
+      border-radius: 2.5rem;
+}
+
+#main-login-form .login-form-title,
+#main-register-form .register-form-title {
+      margin-bottom: 20px;
+      font-size: 16px;
+      font-weight: 400;
+}
+
+#main-register-form.main-register-form {
+      height: 100vh;
+      width: 100vw;
+      background-image: url(/assets/image/banner.png);
+      background-position: center;
+      position: relative;
+}
+
+#main-register-form .register-form {
+      position: absolute;
+      width: 380px;
+      height: 520px;
+      top: 12%;
+      left: 37%;
+      background-color: white;
+      padding: 35px 35px;
+      box-shadow: 5px 10px 5px #aaaa;
+      border-left: 2px solid #aaaa;
+      border-top: 2px solid #aaaa;
+}
