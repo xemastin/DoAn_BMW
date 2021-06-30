@@ -57,6 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <li class="nav-item">
                                   <a class="nav-link text-light" aria-current="page" href="/index.php">Home</a>
                                 </li>
+                                <?php if (isset($_SESSION["position"]) && $_SESSION["position"] == 1){
+                                ?>
                                 <li class="nav-item dropdown">
                                   <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Product
@@ -66,6 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <li><a class="dropdown-item" href="/theme/add-product.php">Add Products</a></li>
                                   </ul>
                                 </li>
+                                <?php } ?>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link active dropdown-toggle text-light" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                       User
