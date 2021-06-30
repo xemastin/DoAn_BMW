@@ -1,3 +1,38 @@
+<?php 
+include 'dbConection.php';
+session_start();
+//if (!(isset($_SESSION["position"]) && $_SESSION["position"] < 2)){
+      //header("Location: http://".$_SERVER['HTTP_HOST']."/index.php");
+//}
+$array = array();
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+      $sql = "SELECT * FROM product";
+      $result = mysqli_query($conn, $sql);
+      while ($row = mysqli_fetch_assoc($result)) {
+            $array[] = array(
+                  'id_product' => $row['id_product'],
+                  'name' => $row['name'],
+                  'price' => $row['price'],
+                  'description' => $row['description'],
+                  'image' => $row['image']
+            );
+      }
+}
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+      if (isset($_POST['action']) && $_POST['action'] == "delete" && isset($_POST['idProduct']) && is_numeric($_POST['idProduct']) == 1){
+            $sql = "DELETE FROM MyGuests WHERE id=". $_POST['idProduct'].";";
+
+            
+            if ($conn->query($sql) === TRUE) {
+                  $myObj = array("action"=>"delete", "status"=>"OK");
+            }else{
+                  $myObj = array("action"=>"delete", "status"=>"ERROR");
+            }
+            echo json_encode($myObj);
+            die();
+      }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,12 +53,15 @@
 
       <!-- Main Files CSS -->
       <link href="/assets/css/style.css" rel="stylesheet">
+      <!-- Main Files JS -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="/assets/js/main.js"></script>
 </head>
 <body>
       <header id="header">
             <div class="navbar navbar-expand-lg nabar-dark bg-dark px-3">
                   <div class="container-fluid">
-                        <a class="navbar-brand d-block text-uppercase text-light text-center fs-4" href="/index.html">
+                        <a class="navbar-brand d-block text-uppercase text-light text-center fs-4" href="/index.php">
                               <img src="/assets/image/favicon.png" class="img-fluid" width="40px" height="40px"> 
                               Laptop Store
                         </a>
@@ -34,15 +72,15 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                               <ul class="navbar-nav mb-lg-0 ms-auto me-5 text-uppercase">
                                 <li class="nav-item">
-                                  <a class="nav-link text-light" aria-current="page" href="/index.html">Home</a>
+                                  <a class="nav-link text-light" aria-current="page" href="/index.php">Home</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                   <a class="nav-link active dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Product
                                   </a>
                                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="/theme/all-product.html">All Products</a></li>
-                                    <li><a class="dropdown-item" href="/theme/add-product.html">Add Products</a></li>
+                                    <li><a class="dropdown-item" href="/theme/all-product.php">All Products</a></li>
+                                    <li><a class="dropdown-item" href="/theme/add-product.php">Add Products</a></li>
                                   </ul>
                                 </li>
                                 <li class="nav-item dropdown">
@@ -50,8 +88,8 @@
                                       User
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
-                                      <li><a class="dropdown-item" href="/theme/login-form.html">Login</a></li>
-                                      <li><a class="dropdown-item" href="/theme/register-form.html">Register</a></li>
+                                      <li><a class="dropdown-item" href="/theme/login-form.php">Login</a></li>
+                                      <li><a class="dropdown-item" href="/theme/register-form.php">Register</a></li>
                                     </ul>
                                 </li>
                               </ul>
@@ -79,90 +117,22 @@
                                     </tr>
                               </thead>
                               <tbody>
-                                    <tr>
-                                          <td>1</td>
-                                          <td>Macbook Air 2018 Gray</td>
+                                    <?php foreach ($array as $value) { ?>
+                                    <tr id="laptop<?php echo $value['id_product']; ?>">
+                                          <td><?php echo $value['id_product']; ?></td>
+                                          <td><?php echo $value['name']; ?></td>
                                           <td>
-                                                <img src="/assets/image/products/macbook-air-2018-13-inch-gray.png" width="100px" height="100px">
+                                                <img src="data:image/jpeg;base64,<?php echo base64_encode( $value['image'] ); ?>" width="100px" height="100px">
                                           </td>
                                           <td>
-                                                Some quick example text to build on the card title and 
-                                                <br>
-                                                make up the bulk of the card's content.
+                                                <?php echo $value['description']; ?>
                                           </td>
                                           <td>
-                                                <button class="btn btn-outline-warning text-uppercase me-2 mb-2 mb-md-0">Remove</button>
+                                                <button onclick="Delete(<?php echo $value['id_product']; ?>)" class="btn btn-outline-warning text-uppercase me-2 mb-2 mb-md-0">Remove</button>
                                                 <button class="btn btn-outline-info text-uppercase">Edit</button>
                                           </td>
                                     </tr>
-
-                                    <tr>
-                                          <td>1</td>
-                                          <td>Macbook Air 2018 Gray</td>
-                                          <td>
-                                                <img src="/assets/image/products/macbook-air-2018-13-inch-gray.png" width="100px" height="100px">
-                                          </td>
-                                          <td>
-                                                Some quick example text to build on the card title and 
-                                                <br>
-                                                make up the bulk of the card's content.
-                                          </td>
-                                          <td>
-                                                <button class="btn btn-outline-warning text-uppercase me-2 mb-2 mb-md-0">Remove</button>
-                                                <button class="btn btn-outline-info text-uppercase">Edit</button>
-                                          </td>
-                                    </tr>
-
-                                    <tr>
-                                          <td>1</td>
-                                          <td>Macbook Air 2018 Gray</td>
-                                          <td>
-                                                <img src="/assets/image/products/macbook-air-2018-13-inch-gray.png" width="100px" height="100px">
-                                          </td>
-                                          <td>
-                                                Some quick example text to build on the card title and 
-                                                <br>
-                                                make up the bulk of the card's content.
-                                          </td>
-                                          <td>
-                                                <button class="btn btn-outline-warning text-uppercase me-2 mb-2 mb-md-0">Remove</button>
-                                                <button class="btn btn-outline-info text-uppercase">Edit</button>
-                                          </td>
-                                    </tr>
-
-                                    <tr>
-                                          <td>1</td>
-                                          <td>Macbook Air 2018 Gray</td>
-                                          <td>
-                                                <img src="/assets/image/products/macbook-air-2018-13-inch-gray.png" width="100px" height="100px">
-                                          </td>
-                                          <td>
-                                                Some quick example text to build on the card title and 
-                                                <br>
-                                                make up the bulk of the card's content.
-                                          </td>
-                                          <td>
-                                                <button class="btn btn-outline-warning text-uppercase me-2 mb-2 mb-md-0">Remove</button>
-                                                <button class="btn btn-outline-info text-uppercase">Edit</button>
-                                          </td>
-                                    </tr>
-
-                                    <tr>
-                                          <td>1</td>
-                                          <td>Macbook Air 2018 Gray</td>
-                                          <td>
-                                                <img src="/assets/image/products/macbook-air-2018-13-inch-gray.png" width="100px" height="100px">
-                                          </td>
-                                          <td>
-                                                Some quick example text to build on the card title and 
-                                                <br>
-                                                make up the bulk of the card's content.
-                                          </td>
-                                          <td>
-                                                <button class="btn btn-outline-warning text-uppercase me-2 mb-2 mb-md-0">Remove</button>
-                                                <button class="btn btn-outline-info text-uppercase">Edit</button>
-                                          </td>
-                                    </tr>
+                                    <?php } ?>
                               </tbody>
 
                         </table>

@@ -1,5 +1,31 @@
 <?php
 session_start();
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
+      if (empty($_POST["fullName"])){
+            echo "Error"; die();
+      }
+      if (empty($_POST["username"])){
+            echo "Error"; die();
+      }
+      if (empty($_POST["email"])){
+            echo "Error"; die();
+      }
+      if (empty($_POST["password"])){
+            echo "Error"; die();
+      }
+      if (empty($_POST["re_password"]) || $_POST["password"] !== $_POST["re_password"]){
+            echo "Error"; die();
+      }
+      $sql = "INSERT INTO user(fullName,email,username,password,position) 
+      VALUES ('".$_POST["fullName"]."', '".$_POST["email"]."', '".$_POST["username"]."','".hash("sha256",$_POST['password'])."','1')";
+
+      if ($conn->query($sql) === TRUE) {
+            $_SESSION["name"] = $_POST["fullName"];
+            $_SESSION["position"] = 1;
+            header("Location: http://".$_SERVER['HTTP_HOST']."/index.php");
+            die();
+      }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,31 +37,63 @@ session_start();
       <title>LAPTOP STORE</title>
       <link href="/assets/image/favicon-16x16.png" rel="icon">
  <!--valid confirm password-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"
             type="text/javascript"></script>
-    <script>
-        $().ready(function () {
+            
+      <script>
+            $().ready(function () {
             $("#register").validate({
-                debug: true,
-                rules: {
-                    email: {
-                        required: true,
-                        email: true
-                    },
-                    pass: {
-                        required: true,
-                        minlength: 5
-                    },
-                    confirm: {
-                        required: true,
-                        minlength: 5,
-                        equalTo: "#password"
-                    }
-                },
+                  rules: {
+                        fullName: {
+                              required: true,
+                              maxlength: 40,
+                        },
+                        username:{
+                              require: true,
+                              minlength: 10
+                        },
+                        email: {
+                              required: true,
+                              email: true
+                        },
+                        password: {
+                              require: true,
+                              minlength: 10
+                        },
+                        re_password:{
+                              required: true,
+                              equalTo: 'input[name="password"]'
+                        }
+                  },
+                  messages: {
+                        fullName: {
+                              required: "Trường thông tin bắt buộc",
+                              maxlength: "Số kí tự tối đa là 40 kí tự",
+                        },
+                        username:{
+                              require: "Trường thông tin bắt buộc",
+                              minlength: "Username có độ dài ít nhất 10 kí tự"
+                        },
+                        email: {
+                              required: "Trường thông tin bắt buộc",
+                              email: "Cần có @ và '.'"
+                        },
+                        password: {
+                              required: "Trường thông tin bắt buộc",
+                              minlength: "Mật khẩu có độ dài ít nhất 10 kí tự"
+                        },
+                        re_password:{
+                              required: "Trường thông tin bắt buộc",
+                              equalTo: "Mật khẩu không trùng khớp"
+                        }
+                  },
+            })})
+            function stopSubmit(){
+                  if (document.getElementsByName("password")[0].value == document.getElementsByName("re_password")[0].value)
+                  return true;
+                  return false;
             }
-            )
-        })
     </script>
       <!-- Google Fonts -->
       <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -74,6 +132,7 @@ session_start();
                                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="/theme/all-product.php">All Products</a></li>
                                     <li><a class="dropdown-item" href="/theme/add-product.php">Add Products</a></li>
+                                    <li><a class="dropdown-item" href="/theme/detail-product.php">Details Product</a></li>
                                   </ul>
                                 </li>
                                 <?php } ?>
@@ -83,7 +142,7 @@ session_start();
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
                                       <li><a class="dropdown-item" href="/theme/login-form.php">Login</a></li>
-                                      <li><a class="dropdown-item" href="/theme/register-form.php">Register</a></li>
+                                      <!-- <li><a class="dropdown-item" href="/theme/register-form.php">Register</a></li> -->
                                     </ul>
                                 </li>
                               </ul>
@@ -107,13 +166,13 @@ session_start();
                         <p>Create your account</p>
                   </div>
             
-            <form id="register" action="">
-                <input class="form-control mb-3" type="text" placeholder="Fullname">
-                <input class="form-control mb-3" type="email" id="email" name="email" placeholder="Email Address">
-                <input class="form-control mb-3" type="text" minlength="5" placeholder="Username" required>
-                <input class="form-control mb-3" name="pass" id="pass" type="password" placeholder="Password">
-                <input class="form-control mb-3" name="confirm" id="confirm" type="password" placeholder="Repeat Password">
-                <button class="btn btn-outline-success text-uppercase fw-bold w-100">Sign Up</button>
+            <form id="register" method="POST" action="" onsubmit="return stopSubmit()">
+                <input class="form-control mb-3" type="text" name="fullName" placeholder="Fullname">
+                <input class="form-control mb-3" type="email" name="email" id="email" placeholder="Email Address">
+                <input class="form-control mb-3" type="text" name="username" minlength="5" placeholder="Username" required>
+                <input class="form-control mb-3" type="password" name="password" id="pass"  placeholder="Password">
+                <input class="form-control mb-3" type="password" name="re_password" id="confirm"  placeholder="Repeat Password">
+                <button type="submit" class="btn btn-outline-success text-uppercase fw-bold w-100">Sign Up</button>
             </form>
             </div>
       </section>

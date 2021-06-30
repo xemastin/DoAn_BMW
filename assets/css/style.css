@@ -5,7 +5,7 @@ p {
 }
 a {
       text-decoration: none;
-      color: white;
+      color: black;
       font-family: 'Poppins';
 }
 h1, h2, h3, h4, h5, h6 {
@@ -125,7 +125,7 @@ h1, h2, h3, h4, h5, h6 {
 #main-register-form .register-form {
       position: absolute;
       width: 380px;
-      height: 520px;
+      height: auto;
       top: 12%;
       left: 37%;
       background-color: white;
@@ -133,4 +133,125 @@ h1, h2, h3, h4, h5, h6 {
       box-shadow: 5px 10px 5px #aaaa;
       border-left: 2px solid #aaaa;
       border-top: 2px solid #aaaa;
+}
+
+#contentDetailProduct.content-detail-product {
+      margin-top: 90px;
+      margin-bottom: 90px;
+}
+#contentDetailProduct .product-images {
+      display: flex;
+}
+#contentDetailProduct .product-thumbnails {
+      margin-right: 30px;
+}
+#contentDetailProduct .product-thumbnails .product-thumbnail-item {
+      display: block;
+      margin: 10px;
+      opacity: 0.63;
+      border: 1px solid #e3d9ef;
+  }
+
+#contentDetailProduct .product-thumbnails .product-thumbnail-item.active {
+      border: 1px solid #e5383b;
+      opacity: 1;
+}
+#contentDetailProduct .product-preview-images {
+      width: 500px;
+      height: 500px;
+      overflow: hidden;
+}
+#contentDetailProduct .product-thumbnails .product-thumbnail-item {
+      max-width: 150px;
+      overflow: hidden;
+}
+
+#contentDetailProduct .card-group-custom {
+      margin-top: 18px;
+      margin-bottom: 0;
+}
+#contentDetailProduct .card-group-custom .card-custom {
+      background-color: transparent;
+      display: block;
+      margin: 0;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+}
+
+#contentDetailProduct .card-header {
+      background-color: transparent;
+}
+
+#contentDetailProduct .card-custom .card-title {
+      margin-bottom: 0;
+}
+#contentDetailProduct .card-corporate .card-title a {
+      display: block;
+      position: relative;
+      z-index: 1;
+      padding: 18px 0;
+      font-weight: 400;
+      line-height: 1.25;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      transition: 0.3s all ease;
+}
+
+#contentDetailProduct .card-corporate .card-title a:focus,
+#contentDetailProduct .card-corporate .card-title a:hover {
+      color: #12bc00;
+      text-decoration: none;
+}
+#contentDetailProduct .card-corporate .card-title a.collapsed {
+      color: black;
+}
+#contentDetailProduct .card-corporate .card-title a {
+      color: #12bc00;
+}
+#contentDetailProduct .card-arrow {
+      position: absolute;
+      top: 0;
+      bottom: -1px;
+      right: -1px;
+      left: auto;
+      z-index: 2;
+      width: 70px;
+      transition: 0.3s all ease;
+}
+#contentDetailProduct .card-arrow::before {
+      width: 14px;
+      height: 2px;
+      right: 28px;
+      background-color: black;
+}
+
+#contentDetailProduct .card-arrow::after {
+      width: 2px;
+      height: 14px;
+      right: 34px;
+      background-color: black;
+}
+
+#contentDetailProduct .card-arrow::before,
+#contentDetailProduct .card-arrow::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      z-index: 4;
+      transform: translateY(-50%);
+}
+
+#contentDetailProduct a.collapsed .card-arrow::after {
+      opacity: 1;
+      visibility: visible;
+}
+
+#contentDetailProduct a .card-arrow::after {
+      opacity: 0;
+      visibility: hidden;
+}
+
+.error {
+      color: red;
 }

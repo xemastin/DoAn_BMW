@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
       $result = mysqli_query($conn, $sql);
       while ($row = mysqli_fetch_assoc($result)) {
             $array[] = array(
-                  'id_product ' => $row['id_product'],
+                  'id_product' => $row['id_product'],
                   'name' => $row['name'],
                   'price' => $row['price'],
                   'description' => $row['description'],
@@ -15,7 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             );
       }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -65,6 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="/theme/all-product.php">All Products</a></li>
                                     <li><a class="dropdown-item" href="/theme/add-product.php">Add Products</a></li>
+                                    <li><a class="dropdown-item" href="/theme/detail-product.html">Details Product</a></li>
                                   </ul>
                                 </li>
                                 <?php } ?>
@@ -107,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                       <h5 class="card-title"><?php echo $value['name'] ?> </h5>
                                       <h4 class="card-text text-danger"><?php echo number_format($value['price'], 0, '', '.'); ?> VNĐ</h4>
                                       <p class="card-text mb-3"><?php echo $value['description'] ?></p>
-                                      <a href="#" class="btn btn-outline-success">Get it</a>
+                                      <a href="/theme/detail-product.php?id=<?php echo $value['id_product'] ?>" class="btn btn-outline-success">Get it</a>
                                     </div>
                               </div>
                         </div>
