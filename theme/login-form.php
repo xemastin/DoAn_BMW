@@ -1,3 +1,24 @@
+<?php 
+include 'dbConection.php';
+session_start();
+if ($_SERVER["REQUEST_METHOD"] == "POST") { 
+      if (isset($_POST['username']))
+            if (isset($_POST['password'])){
+                  $sql = "SELECT * FROM user WHERE ( username='". $_POST['username'] ."' OR email='". $_POST['username'] ."') AND password='". hash("sha256",$_POST['password']) ."';";
+                  $result = $conn->query($sql);
+                  if ($result->num_rows > 0){
+                        $row = $result->fetch_assoc();
+                        $_SESSION["name"] = $row["fullName"];
+                        $_SESSION["position"] = $row["position"];
+                        header("Location: http://".$_SERVER['HTTP_HOST']."/index.php");
+                        die();
+                  }else{
+                        unset($_SESSION["name"]);
+                        unset($_SESSION["position"]);
+                  }
+            }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +44,7 @@
       <header id="header">
             <div class="navbar navbar-expand-lg nabar-dark bg-dark px-3">
                   <div class="container-fluid">
-                        <a class="navbar-brand d-block text-uppercase text-light text-center fs-4" href="/index.html">
+                        <a class="navbar-brand d-block text-uppercase text-light text-center fs-4" href="/index.php">
                               <img src="/assets/image/favicon.png" class="img-fluid" width="40px" height="40px"> 
                               Laptop Store
                         </a>
@@ -34,15 +55,15 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                               <ul class="navbar-nav mb-lg-0 ms-auto me-5 text-uppercase">
                                 <li class="nav-item">
-                                  <a class="nav-link text-light" aria-current="page" href="/index.html">Home</a>
+                                  <a class="nav-link text-light" aria-current="page" href="/index.php">Home</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                   <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Product
                                   </a>
                                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="/theme/all-product.html">All Products</a></li>
-                                    <li><a class="dropdown-item" href="/theme/add-product.html">Add Products</a></li>
+                                    <li><a class="dropdown-item" href="/theme/all-product.php">All Products</a></li>
+                                    <li><a class="dropdown-item" href="/theme/add-product.php">Add Products</a></li>
                                   </ul>
                                 </li>
                                 <li class="nav-item dropdown">
@@ -50,8 +71,8 @@
                                       User
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
-                                      <li><a class="dropdown-item" href="/theme/login-form.html">Login</a></li>
-                                      <li><a class="dropdown-item" href="/theme/register-form.html">Register</a></li>
+                                      <li><a class="dropdown-item" href="/theme/login-form.php">Login</a></li>
+                                      <li><a class="dropdown-item" href="/theme/register-form.php">Register</a></li>
                                     </ul>
                                 </li>
                               </ul>
@@ -73,11 +94,11 @@
                   <div class="login-form-title">
                         <p>Sign into your account</p>
                   </div>
-                  <form>
-                        <input class="form-control mb-4" type="text" placeholder="Username/Email Address">
-                        <input class="form-control mb-4" type="password" placeholder="Password"> 
+                  <form method="POST">
+                        <input name="username" class="form-control mb-4" type="text" placeholder="Username/Email Address">
+                        <input name="password" class="form-control mb-4" type="password" placeholder="Password"> 
                         
-                        <button class="btn btn-outline-success text-uppercase fw-bold w-100">Login</button>
+                        <button type="submit" class="btn btn-outline-success text-uppercase fw-bold w-100">Login</button>
                   </form>
             </div>
       </section>
