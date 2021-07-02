@@ -20,13 +20,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
       if (isset($_POST['action']) && $_POST['action'] == "delete" && isset($_POST['idProduct']) && is_numeric($_POST['idProduct']) == 1){
-            $sql = "DELETE FROM MyGuests WHERE id=". $_POST['idProduct'].";";
-
-            
+            $sql = "DELETE FROM product WHERE id_product=". $_POST['idProduct'].";";
             if ($conn->query($sql) === TRUE) {
                   $myObj = array("action"=>"delete", "status"=>"OK");
             }else{
-                  $myObj = array("action"=>"delete", "status"=>"ERROR");
+                  $myObj = array("action"=>"delete", "status"=>"ERROR","error"=>$conn->error);
             }
             echo json_encode($myObj);
             die();
@@ -79,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     Product
                                   </a>
                                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="/theme/all-product.php">All Products</a></li>
+                                    <li><a class="dropdown-item disabled" href="/theme/all-product.php">All Products</a></li>
                                     <li><a class="dropdown-item" href="/theme/add-product.php">Add Products</a></li>
                                   </ul>
                                 </li>
@@ -129,7 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                           </td>
                                           <td>
                                                 <button onclick="Delete(<?php echo $value['id_product']; ?>)" class="btn btn-outline-warning text-uppercase me-2 mb-2 mb-md-0">Remove</button>
-                                                <button class="btn btn-outline-info text-uppercase">Edit</button>
+                                                <a href="./edit-product.php?id=<?php echo $value['id_product']; ?>"><button class="btn btn-outline-info text-uppercase">Edit</button></a>
                                           </td>
                                     </tr>
                                     <?php } ?>

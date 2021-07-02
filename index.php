@@ -64,7 +64,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="/theme/all-product.php">All Products</a></li>
                                     <li><a class="dropdown-item" href="/theme/add-product.php">Add Products</a></li>
-                                    <li><a class="dropdown-item" href="/theme/detail-product.html">Details Product</a></li>
                                   </ul>
                                 </li>
                                 <?php } ?>

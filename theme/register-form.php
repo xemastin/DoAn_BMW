@@ -1,4 +1,5 @@
 <?php
+include 'dbConection.php';
 session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
       if (empty($_POST["fullName"])){
@@ -142,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
                                       <li><a class="dropdown-item" href="/theme/login-form.php">Login</a></li>
-                                      <!-- <li><a class="dropdown-item" href="/theme/register-form.php">Register</a></li> -->
+                                      <li><a class="dropdown-item disabled" href="/theme/register-form.php">Register</a></li>
                                     </ul>
                                 </li>
                               </ul>

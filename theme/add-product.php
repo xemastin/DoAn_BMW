@@ -1,7 +1,48 @@
 <?php 
+include 'dbConection.php';
 session_start();
 if (!(isset($_SESSION["position"]) && $_SESSION["position"] < 2)){
       header("Location: http://".$_SERVER['HTTP_HOST']."/index.php");
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+      if (empty($_POST["nameProduct"])){
+            header("Location: http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+      }
+      if (empty($_POST["priceProduct"])){
+            header("Location: http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+      }
+      if (empty($_POST["descriptionProduct"])){
+            header("Location: http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+      }
+      $name = $_POST["nameProduct"];
+      $price = $_POST["priceProduct"];
+      $description = $_POST["descriptionProduct"];
+      $image_name = $_FILES['imageProduct']['name'];
+
+      if (!file_exists(dirname(getcwd(),1)."\\assets\\Uploads")){
+            mkdir(dirname(getcwd(),1)."\\assets\\Uploads", 0777);
+      }
+      
+      move_uploaded_file($_FILES['imageProduct']['tmp_name'], dirname(getcwd(),1)."\\assets\\Uploads\\".$_FILES['imageProduct']['name']);
+      $image_file = file_get_contents(dirname(getcwd(),1)."\\assets\\Uploads\\".$_FILES['imageProduct']['name']);
+      $sql = "insert into product(name,price,description,nameImage,image)
+       values(?,?,?,?,?)";
+
+      $stmt = mysqli_prepare($conn,$sql);
+      mysqli_stmt_bind_param($stmt, "sisss",$name,$price,$description,$image_name,$image_file);
+      mysqli_stmt_execute($stmt);
+
+      $check = mysqli_stmt_affected_rows($stmt);
+      if($check==1){
+            delete_files(dirname(getcwd(),1)."\\assets\\Uploads");
+            header("Location: http://".$_SERVER['HTTP_HOST']."/theme/all-product.php");
+            die();
+      }else{
+            $msg = $stmt->error;
+      }
+      echo $msg;
+      die();
 }
 ?>
 <!DOCTYPE html>
@@ -46,18 +87,22 @@ if (!(isset($_SESSION["position"]) && $_SESSION["position"] < 2)){
                                   <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Product
                                   </a>
-                                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                  <ul class="dropdown-menu active" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="/theme/all-product.php">All Products</a></li>
-                                    <li><a class="dropdown-item" href="/theme/add-product.php">Add Products</a></li>
-                                    <li><a class="dropdown-item" href="/theme/detail-product.php">Details Product</a></li>
+                                    <li><a class="dropdown-item disabled" href="/theme/add-product.php" >Add Products</a></li>
+                                  
                                   </ul>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link active dropdown-toggle text-light" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                       User
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
-                                      <li><a class="dropdown-item" href="/theme/login-form.php">Login</a></li>
+                                      <li><?php if (isset($_SESSION["position"]) && isset($_SESSION["name"])){ ?>
+                                          <a class="dropdown-item" href="/theme/logout.php">Logout</a>
+                                      <?php }else{ ?>
+                                          <a class="dropdown-item" href="/theme/login-form.php">Login</a>
+                                      <?php } ?></li>
                                       <li><a class="dropdown-item" href="/theme/register-form.php">Register</a></li>
                                     </ul>
                                 </li>
@@ -66,7 +111,7 @@ if (!(isset($_SESSION["position"]) && $_SESSION["position"] < 2)){
                                 <input class="form-control me-2" type="search" placeholder="Type something here" aria-label="Search">
                                 <button class="btn btn-outline-success" type="submit">Search</button>
                               </form>
-                            </div>
+                        </div>
                   </div>
             </div>
       </header>
@@ -75,22 +120,22 @@ if (!(isset($_SESSION["position"]) && $_SESSION["position"] < 2)){
             <div class="container">
                   <h3 class="text-uppercase">Add Product</h3>
                   <div class="add-product-form">
-                        <form>
+                        <form action="" method="POST" enctype="multipart/form-data">
                               <div class="row mb-3">
                                     <div class="col-2 col-sm-2">
                                           <label class="form-label text-uppercase fw-bold">Name</label>
                                     </div>
                                     <div class="col-10 col-sm-10">
-                                          <input class="form-control">
+                                          <input type="text" name="nameProduct" class="form-control"/>
                                     </div>
-                              </div>
-
+                              </div> 
+                              
                               <div class="row mb-3">
                                     <div class="col-2 col-sm-2">
                                           <label class="form-label text-uppercase fw-bold">Price</label>
                                     </div>
                                     <div class="col-10 col-sm-10">
-                                          <input class="form-control">
+                                          <input type="text" name="priceProduct" class="form-control"></input>
                                     </div>
                               </div>
 
@@ -99,19 +144,20 @@ if (!(isset($_SESSION["position"]) && $_SESSION["position"] < 2)){
                                           <label class="form-label text-uppercase fw-bold">Image</label>
                                     </div>
                                     <div class="col-10 col-sm-10">
-                                          <button class="btn btn-secondary text-uppercase">Browser</button>
-                                          <span class="fst-italic ms-3">No files selected.</span>
+                                          <input type="file" name="imageProduct" class="btn btn-secondary text-uppercase"></input>
+                                          <span class="fst-italic ms-3"></span>
                                     </div>
                               </div>
 
                               <div class="row mb-3">
                                     <div class="col-2 col-sm-2">
-                                          <label class="form-label text-uppercase fw-bold">Price</label>
+                                          <label class="form-label text-uppercase fw-bold">Description</label>
                                     </div>
                                     <div class="col-10 col-sm-10">
-                                          <textarea class="form-control" rows="3"></textarea>
+                                          <textarea class="form-control" name="descriptionProduct" rows="3"></textarea>
                                     </div>
                               </div>
+                              <button type="submit" class="btn btn-secondary">Upload Product</button>
                         </form>
                   </div>
             </div>

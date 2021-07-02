@@ -3,10 +3,10 @@ include 'dbConection.php';
 session_start();
 $array = array();
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['id']) && is_numeric($_GET['id']) == 1){
-        $sql = "SELECT * FROM product WHERE id_product=". $_GET['id'] ."";
+    if (isset($_GET['id']) && is_numeric($_GET['id']) == 1) {
+        $sql = "SELECT * FROM product WHERE id_product=" . $_GET['id'] . "";
         $result = $conn->query($sql);
-        if ($result->num_rows > 0){
+        if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $array[] = array(
                 'id_product' => $row['id_product'],
@@ -15,13 +15,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 'description' => $row['description'],
                 'image' => $row['image']
             );
-        }else{
-            header("Location: http://".$_SERVER['HTTP_HOST']."/index.php");
+        } else {
+            header("Location: http://" . $_SERVER['HTTP_HOST'] . "/index.php");
             die();
         }
-    }
-    else{
-        header("Location: http://".$_SERVER['HTTP_HOST']."/index.php");
+    } else {
+        header("Location: http://" . $_SERVER['HTTP_HOST'] . "/index.php");
         die();
     }
 }
@@ -41,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/vendor/icofont/icofont.min.css" rel="stylesheet">
 
@@ -57,9 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     <img src="/assets/image/favicon.png" class="img-fluid" width="40px" height="40px">
                     Laptop Store
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="icofont-navigation-menu" style="color: white;"></span>
                 </button>
 
@@ -69,32 +66,34 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                             <a class="nav-link text-light" aria-current="page" href="/index.php">Home</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light active" href="#" id="navbarDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-light active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Product
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <?php if (isset($_SESSION["position"]) && $_SESSION["position"] == 1){ ?>
-                                <li><a class="dropdown-item" href="/theme/all-product.php">All Products</a></li>
-                                <li><a class="dropdown-item" href="/theme/add-product.php">Add Products</a></li>
+                                <?php if (isset($_SESSION["position"]) && $_SESSION["position"] == 1) { ?>
+                                    <li><a class="dropdown-item" href="/theme/all-product.php">All Products</a></li>
+                                    <li><a class="dropdown-item" href="/theme/add-product.php">Add Products</a></li>
                                 <?php } ?>
-                                <li><a class="dropdown-item " href="/theme/detail-product.php">Details Product</a></li>
+                                <li><a class="dropdown-item disabled" href="/theme/detail-product.php">Details Product</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownUser"
-                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 User
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
-                                <li><a class="dropdown-item" href="/theme/login-form.php">Login</a></li>
+                                <li><?php if (isset($_SESSION["position"]) && $_SESSION["position"] == 1) { ?>
+                                        <a class="dropdown-item" href="/theme/logout.php">Logout</a>
+                                    <?php } else { ?>
+                                        <a class="dropdown-item" href="/theme/login-form.php">Login</a>
+                                    <?php } ?>
+                                </li>
                                 <li><a class="dropdown-item" href="/theme/register-form.php">Register</a></li>
                             </ul>
                         </li>
                     </ul>
                     <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Type something here"
-                            aria-label="Search">
+                        <input class="form-control me-2" type="search" placeholder="Type something here" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
                 </div>
@@ -109,20 +108,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     <div class="product-images">
                         <!-- Product Large Image -->
                         <div class="tab-content product-preview-images order-2">
-                            <div id="image1" class="tab-pane fade show active" role="tabpane"
-                                aria-labelledby="thumbnail1">
-                                <img class="img-fluid" src="/assets/image/products/macbook-air-2018-13-inch-gray.png"
-                                    alt="">
+                            <div id="image1" class="tab-pane fade show active" role="tabpane" aria-labelledby="thumbnail1">
+                                <img class="img-fluid" src="data:image/jpeg;base64,<?php echo base64_encode($array[0]['image']); ?>" alt="">
                             </div>
                             <div id="image2" class="tab-pane fade" role="tabpane" aria-labelledby="thumbnail2">
-                                <img class="img-fluid"
-                                    src="/assets/image/products-thumbnail/macbook-air-2018-13-inch-gray-thumbnail-01.png"
-                                    alt="">
+                                <img class="img-fluid" src="/assets/image/products-thumbnail/macbook-air-2018-13-inch-gray-thumbnail-01.png" alt="">
                             </div>
                             <div id="image3" class="tab-pane fade" role="tabpane" aria-labelledby="thumbnail3">
-                                <img class="img-fluid"
-                                    src="/assets/image/products-thumbnail/macbook-air-2018-13-inch-gray-thumbnail-02.png"
-                                    alt="">
+                                <img class="img-fluid" src="/assets/image/products-thumbnail/macbook-air-2018-13-inch-gray-thumbnail-02.png" alt="">
                             </div>
                         </div>
                         <!-- end Product Large Image -->
@@ -130,30 +123,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                         <div class="product-thumbnails order-1">
                             <ul class="nav d-flex flex-column" role="tablist">
                                 <li role="presentation">
-                                    <a id="thumbnail1" class="product-thumbnail-item active d-block" href="#image1"
-                                        data-bs-toggle="tab" data-bs-target="#image1" type="button" role="tab"
-                                        aria-controls="image1" aria-selected="true">
-                                        <img class="img-fluid"
-                                            src="/assets/image/products/macbook-air-2018-13-inch-gray.png"
-                                            alt="Product Thumbnail">
+                                    <a id="thumbnail1" class="product-thumbnail-item active d-block" href="#image1" data-bs-toggle="tab" data-bs-target="#image1" type="button" role="tab" aria-controls="image1" aria-selected="true">
+                                        <img class="img-fluid" src="data:image/jpeg;base64,<?php echo base64_encode($array[0]['image']); ?>" alt="Product Thumbnail">
                                     </a>
                                 </li>
                                 <li role="presentation">
-                                    <a id="thumbnail2" class="product-thumbnail-item d-block" href="#image2"
-                                        data-bs-toggle="tab" data-bs-target="#image2" type="button" role="tab"
-                                        aria-controls="image2" aria-selected="false">
-                                        <img class="img-fluid"
-                                            src="/assets/image/products-thumbnail/macbook-air-2018-13-inch-gray-thumbnail-01.png"
-                                            alt="Product Thumbnail">
+                                    <a id="thumbnail2" class="product-thumbnail-item d-block" href="#image2" data-bs-toggle="tab" data-bs-target="#image2" type="button" role="tab" aria-controls="image2" aria-selected="false">
+                                        <img class="img-fluid" src="/assets/image/products-thumbnail/macbook-air-2018-13-inch-gray-thumbnail-01.png" alt="Product Thumbnail">
                                     </a>
                                 </li>
                                 <li role="presentation">
-                                    <a id="thumbnail3" class="product-thumbnail-item d-block" href="#image3"
-                                        data-bs-toggle="tab" data-bs-target="#image3" type="button" role="tab"
-                                        aria-controls="image3" aria-selected="false">
-                                        <img class="img-fluid"
-                                            src="/assets/image/products-thumbnail/macbook-air-2018-13-inch-gray-thumbnail-02.png"
-                                            alt="Product Thumbnail">
+                                    <a id="thumbnail3" class="product-thumbnail-item d-block" href="#image3" data-bs-toggle="tab" data-bs-target="#image3" type="button" role="tab" aria-controls="image3" aria-selected="false">
+                                        <img class="img-fluid" src="/assets/image/products-thumbnail/macbook-air-2018-13-inch-gray-thumbnail-02.png" alt="Product Thumbnail">
                                     </a>
                                 </li>
                             </ul>
@@ -177,16 +158,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                         <article class="card card-custom card-corporate border-bottom">
                             <div class="card-header p-0 fs-5" role="tab">
                                 <div class="card-title">
-                                    <a id="cardHeadDescription" class="collapsed" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseDescription" data-bs-parent="#collapseParents"
-                                        role="button" aria-expanded="true" aria-controls="collapseDescription">
+                                    <a id="cardHeadDescription" class="collapsed" data-bs-toggle="collapse" data-bs-target="#collapseDescription" data-bs-parent="#collapseParents" role="button" aria-expanded="true" aria-controls="collapseDescription">
                                         Description
                                         <div class="card-arrow"></div>
                                     </a>
                                 </div>
                             </div>
-                            <div id="collapseDescription" class="collapse mt-3 pb-3" data-bs-parent="#collapseParents"
-                                role="tabpanel" aria-labelledby="cardHeadDelivery">
+                            <div id="collapseDescription" class="collapse mt-3 pb-3" data-bs-parent="#collapseParents" role="tabpanel" aria-labelledby="cardHeadDelivery">
                                 <div class="card-body p-0">
                                     <?php echo $array[0]['description'] ?>
                                 </div>
@@ -196,15 +174,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                         <div class="card card-custom card-corporate border-bottom">
                             <div class="card-header p-0" role="tab">
                                 <div class="card-title fs-5">
-                                    <a id="cardHeadDelivery" class="collapsed" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseDelivery" data-bs-parent="#collapseParents"
-                                        role="button" aria-expand="false" aria-controls="collapseDelivery">
+                                    <a id="cardHeadDelivery" class="collapsed" data-bs-toggle="collapse" data-bs-target="#collapseDelivery" data-bs-parent="#collapseParents" role="button" aria-expand="false" aria-controls="collapseDelivery">
                                         Delivery
                                         <div class="card-arrow"></div>
                                     </a>
                                 </div>
-                                <div id="collapseDelivery" class="collapse mt-1 pb-3" data-bs-parent="#collapseParents"
-                                    role="tabpanel" aria-labelledby="cardHeadDescription">
+                                <div id="collapseDelivery" class="collapse mt-1 pb-3" data-bs-parent="#collapseParents" role="tabpanel" aria-labelledby="cardHeadDescription">
                                     <div class="card-body p-0">
                                         We deliver our goods worldwide. No matter where you live, your order will be
                                         shipped in time and delivered right to your door or to any other location you
@@ -255,6 +230,49 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 
     </section>
+
+    <section class="content-item" id="comments">
+        <div class="container">
+            <div class="row bootstrap snippets bootdeys">
+                <div class="col-md-8 col-sm-12">
+                    <div class="comment-wrapper">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                Comment panel
+                            </div>
+                            <div class="panel-body">
+                                <textarea class="form-control" placeholder="write a comment..." rows="3"></textarea>
+                                <br>
+                                <button type="button" class="btn btn-info pull-right">Post</button>
+                                <div class="clearfix"></div>
+                                <hr>
+                                <ul class="media-list">
+                                    <div class="media">
+                                        <img class="align-self-start mr-3" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2264%22%20height%3D%2264%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_17a64e3cd9a%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A10pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_17a64e3cd9a%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2213.8359375%22%20y%3D%2236.5609375%22%3E64x64%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"  alt="Generic placeholder image">
+                                        <div class="media-body">
+                                            <h5 class="mt-0">Top-aligned media</h5>
+                                            <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+                                            <p>Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                                        </div>
+                                    </div>
+                                    <div class="media">
+                                        <img class="align-self-start mr-3" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2264%22%20height%3D%2264%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_17a64e3cd9a%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A10pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_17a64e3cd9a%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2213.8359375%22%20y%3D%2236.5609375%22%3E64x64%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Generic placeholder image">
+                                        <div class="media-body">
+                                            <h5 class="mt-0">Top-aligned media</h5>
+                                            <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+                                            <p>Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer id="footer" class="bg-dark">
         <div class="container-fluid">
             <div class="d-flex p-3 align-items-center">
