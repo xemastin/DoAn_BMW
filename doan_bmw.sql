@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 02, 2021 at 09:44 PM
+-- Generation Time: Jul 02, 2021 at 09:59 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 8.0.6
 
@@ -20,6 +20,28 @@ SET time_zone = "+00:00";
 --
 -- Database: `doan_bmw`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comment`
+--
+
+CREATE TABLE `comment` (
+  `idComment` int(11) NOT NULL,
+  `idProduct` int(11) NOT NULL,
+  `fullName` varchar(100) NOT NULL,
+  `contentComment` varchar(300) NOT NULL,
+  `timeComment` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `comment`
+--
+
+INSERT INTO `comment` (`idComment`, `idProduct`, `fullName`, `contentComment`, `timeComment`) VALUES
+(1, 1, 'Dương Hoài Phong', 'Sao cũng được', '2021-07-02 22:00:02'),
+(2, 1, 'Anonymous', 'Okay nha', '2021-07-02 22:20:43');
 
 -- --------------------------------------------------------
 
@@ -94,6 +116,12 @@ INSERT INTO `user` (`id_user`, `fullName`, `email`, `username`, `password`, `pos
 --
 
 --
+-- Indexes for table `comment`
+--
+ALTER TABLE `comment`
+  ADD PRIMARY KEY (`idComment`);
+
+--
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
@@ -108,6 +136,12 @@ ALTER TABLE `user`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `comment`
+--
+ALTER TABLE `comment`
+  MODIFY `idComment` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `product`
