@@ -1,9 +1,9 @@
 <?php 
 include 'dbConection.php';
 session_start();
-//if (!(isset($_SESSION["position"]) && $_SESSION["position"] < 2)){
-      //header("Location: http://".$_SERVER['HTTP_HOST']."/index.php");
-//}
+if (!(isset($_SESSION["position"]) && $_SESSION["position"] < 2)){
+      header("Location: http://".$_SERVER['HTTP_HOST']."/index.php");
+}
 $array = array();
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
       $sql = "SELECT * FROM product";

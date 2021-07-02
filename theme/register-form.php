@@ -17,14 +17,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
       if (empty($_POST["re_password"]) || $_POST["password"] !== $_POST["re_password"]){
             echo "Error"; die();
       }
+
+      $sql = "SELECT * FROM user WHERE email='".$_POST['email']."' OR username='".$_POST["username"]."'";
+      $result = $conn->query($sql);
+      if ($result->num_rows > 0) {
+            echo "Username hoặc Email đã có người sử dụng";
+            die();
+      }
+      else{
       $sql = "INSERT INTO user(fullName,email,username,password,position) 
-      VALUES ('".$_POST["fullName"]."', '".$_POST["email"]."', '".$_POST["username"]."','".hash("sha256",$_POST['password'])."','1')";
+      VALUES ('".$_POST["fullName"]."', '".$_POST["email"]."', '".$_POST["username"]."','".hash("sha256",$_POST['password'])."','2')";
 
       if ($conn->query($sql) === TRUE) {
             $_SESSION["name"] = $_POST["fullName"];
-            $_SESSION["position"] = 1;
+            $_SESSION["position"] = 2;
             header("Location: http://".$_SERVER['HTTP_HOST']."/index.php");
             die();
+      }
       }
 }
 ?>

@@ -7,6 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $sql = "SELECT * FROM product WHERE id_product=" . $_GET['id'] . "";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
+            //Lấy thông tin của sản phẩm
             $row = $result->fetch_assoc();
             $array[] = array(
                 'id_product' => $row['id_product'],
@@ -15,6 +16,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 'description' => $row['description'],
                 'image' => $row['image']
             );
+
+            //Đọc comment của sản phẩm đang xem
+            $sql = "SELECT * FROM comment WHERE idProduct=" . $_GET['id'] . "";
+            $result =  mysqli_query($conn, $sql);
+            while ($row = mysqli_fetch_assoc($result)) {
+            $arrayComment[] = array(
+                  'fullName' => htmlspecialchars($row['fullName']),
+                  'contentComment' => htmlspecialchars($row['contentComment']),
+                  'timeComment' => htmlspecialchars($row['timeComment'])
+            );}
+
         } else {
             header("Location: http://" . $_SERVER['HTTP_HOST'] . "/index.php");
             die();
@@ -23,6 +35,38 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         header("Location: http://" . $_SERVER['HTTP_HOST'] . "/index.php");
         die();
     }
+}
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    if (empty($_POST['name'])){
+        die();
+    }
+    if (empty($_POST['idProduct'])){
+        die();
+    }
+    if (empty($_POST['comment'])){
+        $_POST['comment'] = "Say nothing.";
+    }
+    $idProduct = $_POST['idProduct'];
+    $fullName = $_POST['name'];
+    $contentComment = $_POST['comment'];
+    date_default_timezone_set('Asia/Ho_Chi_Minh');
+    $timeComment = date('Y-m-d H:i:s');
+    $sql = "insert into comment(idProduct,fullName,contentComment,timeComment)
+       values(?,?,?,?)";
+
+    $stmt = mysqli_prepare($conn,$sql);
+    mysqli_stmt_bind_param($stmt, "ssss",$idProduct,$fullName,$contentComment,$timeComment);
+    mysqli_stmt_execute($stmt);
+
+    $check = mysqli_stmt_affected_rows($stmt);
+    if($check==1){
+        header("Location: http://".$_SERVER['HTTP_HOST']."/theme/detail-product.php?id=".$idProduct);
+        die();
+    }else{
+        $msg = $stmt->error;
+    }
+    echo $msg;
+    die();
 }
 ?>
 <!DOCTYPE html>
@@ -82,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                 User
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
-                                <li><?php if (isset($_SESSION["position"]) && $_SESSION["position"] == 1) { ?>
+                                <li><?php if (isset($_SESSION["name"]) && isset($_SESSION["position"])) { ?>
                                         <a class="dropdown-item" href="/theme/logout.php">Logout</a>
                                     <?php } else { ?>
                                         <a class="dropdown-item" href="/theme/login-form.php">Login</a>
@@ -241,28 +285,27 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                 Comment panel
                             </div>
                             <div class="panel-body">
-                                <textarea class="form-control" placeholder="write a comment..." rows="3"></textarea>
-                                <br>
-                                <button type="button" class="btn btn-info pull-right">Post</button>
+                                <form action="" method="post">
+                                    <input type="text" hidden name="name" value="<?php if (isset($_SESSION["name"])) echo $_SESSION["name"];else echo "Anonymous" ?>">
+                                    <input type="hidden" name="idProduct" value="<?php echo $_GET['id'] ?>">
+                                    <textarea class="form-control" name="comment" placeholder="Write a comment..." rows="3"></textarea>
+                                    <br>
+                                    <button type="submit" class="btn btn-info pull-right">Post</button>
+                                </form>
                                 <div class="clearfix"></div>
                                 <hr>
                                 <ul class="media-list">
-                                    <div class="media">
-                                        <img class="align-self-start mr-3" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2264%22%20height%3D%2264%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_17a64e3cd9a%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A10pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_17a64e3cd9a%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2213.8359375%22%20y%3D%2236.5609375%22%3E64x64%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"  alt="Generic placeholder image">
-                                        <div class="media-body">
-                                            <h5 class="mt-0">Top-aligned media</h5>
-                                            <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-                                            <p>Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-                                        </div>
-                                    </div>
+                                <?php if (isset($arrayComment)) foreach ($arrayComment as $comment) { ?>
                                     <div class="media">
                                         <img class="align-self-start mr-3" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2264%22%20height%3D%2264%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_17a64e3cd9a%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A10pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_17a64e3cd9a%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2213.8359375%22%20y%3D%2236.5609375%22%3E64x64%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Generic placeholder image">
                                         <div class="media-body">
-                                            <h5 class="mt-0">Top-aligned media</h5>
-                                            <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-                                            <p>Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                                            <h5 class="mt-0"><?php echo $comment["fullName"] ?> <span style="color: gray;font-size: 10px;">- <?php $date = new DateTime($comment["timeComment"]);echo $date->format("d/m/Y H:i:s") ?></span></h5>
+                                            <p><?php echo $comment["contentComment"] ?></p>
+                                            
                                         </div>
                                     </div>
+                                <?php } ?>
+    
                                 </ul>
                             </div>
                         </div>

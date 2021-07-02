@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 02, 2021 at 08:55 AM
+-- Generation Time: Jul 02, 2021 at 09:44 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 8.0.6
 
@@ -86,7 +86,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id_user`, `fullName`, `email`, `username`, `password`, `position`) VALUES
 (2, 'Dương Hoài Phong', '18521236@gm.uit.edu.vn', 'xemastin', 'FD74BDD901857B89F5737E5352A2A8A2D1F000AA4BED4AEE47C95AFAA37D0F99', 1),
-(3, 'Hoài Phong', 'phongtuan77@gmail.com', 'phongtuan77', '5b263904cc95be5671fbebf98bd18bfa38a1c1479565a99f5cebdb612dc49093', 1);
+(3, 'Hoài Phong', 'phongtuan77@gmail.com', 'phongtuan77', '5b263904cc95be5671fbebf98bd18bfa38a1c1479565a99f5cebdb612dc49093', 2),
+(4, 'Phong', 'phongtuan88@gmail.com', 'phongtuan88', 'fac55a3100943979dd4929697a1137b992fcce990118c5d6190dd65600071ed0', 2);
 
 --
 -- Indexes for dumped tables
@@ -118,7 +119,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

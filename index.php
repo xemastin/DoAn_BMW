@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                       User
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
-                                      <li><?php if (isset($_SESSION["position"]) && $_SESSION["position"] == 1){ ?>
+                                      <li><?php if (isset($_SESSION["name"]) && isset($_SESSION["position"])){ ?>
                                           <a class="dropdown-item" href="/theme/logout.php">Logout</a>
                                       <?php }else{ ?>
                                           <a class="dropdown-item" href="/theme/login-form.php">Login</a>
