@@ -1,7 +1,7 @@
 <?php 
 include 'dbConection.php';
 session_start();
-if (!(isset($_SESSION["position"]) && $_SESSION["position"] == 2)){
+if ((isset($_SESSION["position"]) && $_SESSION["position"] == 2)){
       header("Location: http://".$_SERVER['HTTP_HOST']."/index.php");
 }
 
