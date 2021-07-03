@@ -52,58 +52,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             type="text/javascript"></script>
             
       <script>
-            $().ready(function () {
+           $().ready(function () {
             $("#register").validate({
-                  rules: {
-                        fullName: {
-                              required: true,
-                              maxlength: 40,
-                        },
-                        username:{
-                              require: true,
-                              minlength: 10
-                        },
-                        email: {
-                              required: true,
-                              email: true
-                        },
-                        password: {
-                              require: true,
-                              minlength: 10
-                        },
-                        re_password:{
-                              required: true,
-                              equalTo: 'input[name="password"]'
-                        }
-                  },
-                  messages: {
-                        fullName: {
-                              required: "Trường thông tin bắt buộc",
-                              maxlength: "Số kí tự tối đa là 40 kí tự",
-                        },
-                        username:{
-                              require: "Trường thông tin bắt buộc",
-                              minlength: "Username có độ dài ít nhất 10 kí tự"
-                        },
-                        email: {
-                              required: "Trường thông tin bắt buộc",
-                              email: "Cần có @ và '.'"
-                        },
-                        password: {
-                              required: "Trường thông tin bắt buộc",
-                              minlength: "Mật khẩu có độ dài ít nhất 10 kí tự"
-                        },
-                        re_password:{
-                              required: "Trường thông tin bắt buộc",
-                              equalTo: "Mật khẩu không trùng khớp"
-                        }
-                  },
-            })})
-            function stopSubmit(){
-                  if (document.getElementsByName("password")[0].value == document.getElementsByName("re_password")[0].value)
-                  return true;
-                  return false;
+
+                rules: {
+                    fullName:
+                    {
+                        required:true
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    username:
+                    {
+                        required: true,
+                        minlength:5
+                    },
+                    password: {
+                        required: true,
+                        minlength: 5
+                    },
+                    re_password: {
+                        required: true,
+                        minlength: 5,
+                        equalTo: "#password"
+                    }
+                },
             }
+            )
+        })
     </script>
       <!-- Google Fonts -->
       <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -178,11 +156,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             
             <form id="register" method="POST" action="" onsubmit="return stopSubmit()">
                 <input class="form-control mb-3" type="text" name="fullName" placeholder="Fullname">
-                <input class="form-control mb-3" type="email" name="email" id="email" placeholder="Email Address">
-                <input class="form-control mb-3" type="text" name="username" minlength="5" placeholder="Username" required>
-                <input class="form-control mb-3" type="password" name="password" id="pass"  placeholder="Password">
-                <input class="form-control mb-3" type="password" name="re_password" id="confirm"  placeholder="Repeat Password">
-                <button type="submit" class="btn btn-outline-success text-uppercase fw-bold w-100">Sign Up</button>
+                <input class="form-control mb-3" type="email" id="email" name="email" placeholder="Email Address">
+                <input class="form-control mb-3" type="text" name="username" placeholder="Username">
+                <input class="form-control mb-3" name="password" id="password" type="password" placeholder="Password">
+                <input class="form-control mb-3" name="re_password" id="re_password" type="password" placeholder="Repeat Password">
+                <button class="btn btn-outline-success text-uppercase fw-bold w-100">Sign Up</button>
             </form>
             </div>
       </section>
