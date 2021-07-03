@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
       <title>LAPTOP STORE</title>
       <link href="/assets/image/favicon-16x16.png" rel="icon">
       <!--valid confirm password-->
-       <script src="/assets/vendor/jquery/jquery.min.js"></script>
+      <script src="/assets/vendor/jquery/jquery.min.js"></script>
       <script src="/assets/vendor/jquery/jquery.validate.min.js" type="text/javascript"></script>
             
       <script>
