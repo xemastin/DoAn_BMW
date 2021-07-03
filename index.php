@@ -5,16 +5,18 @@ $array = array();
 if (isset($_POST['search-term'])) {
       $postsTitle = "You searched for '" . $_POST['search-term'] . "'";
       $sql = "SELECT * FROM product WHERE name LIKE '%".$_POST['search-term']."%'";
+      echo $sql;
       } else {
       $sql = "SELECT * FROM product";
 }
 $result = mysqli_query($conn, $sql);
+
 while ($row = mysqli_fetch_assoc($result)) {
       $array[] = array(
-            'id_product' => $row['id_product'],
-            'name' => $row['name'],
-            'price' => $row['price'],
-            'description' => $row['description'],
+            'id_product' => htmlspecialchars($row['id_product']),
+            'name' => htmlspecialchars($row['name']),
+            'price' => htmlspecialchars($row['price']),
+            'description' => htmlspecialchars($row['description']),
             'image' => $row['image']
       );
 }

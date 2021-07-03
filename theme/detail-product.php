@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     if (empty($_POST['name'])){
         die();
     }
-    if (empty($_POST['idProduct'])){
+    if (empty($_POST['idProduct']) || is_numeric($_POST['idProduct']) != 1){
         die();
     }
     if (empty($_POST['comment'])){
@@ -53,11 +53,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $timeComment = date('Y-m-d H:i:s');
     $sql = "insert into comment(idProduct,fullName,contentComment,timeComment)
        values(?,?,?,?)";
-
+    
     $stmt = mysqli_prepare($conn,$sql);
     mysqli_stmt_bind_param($stmt, "ssss",$idProduct,$fullName,$contentComment,$timeComment);
     mysqli_stmt_execute($stmt);
-
     $check = mysqli_stmt_affected_rows($stmt);
     if($check==1){
         header("Location: http://".$_SERVER['HTTP_HOST']."/theme/detail-product.php?id=".$idProduct);
