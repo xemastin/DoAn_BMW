@@ -5,18 +5,22 @@ if (!(isset($_SESSION["position"]) && $_SESSION["position"] < 2)){
       header("Location: http://".$_SERVER['HTTP_HOST']."/index.php");
 }
 $array = array();
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
+$Title="All proudcts";
+if (isset($_POST['search-term'])) {
+      $Title = "You searched for '" . $_POST['search-term'] . "'";
+      $sql = "SELECT * FROM product WHERE name LIKE '%".$_POST['search-term']."%'";
+      } else {
       $sql = "SELECT * FROM product";
-      $result = mysqli_query($conn, $sql);
-      while ($row = mysqli_fetch_assoc($result)) {
-            $array[] = array(
-                  'id_product' => $row['id_product'],
-                  'name' => $row['name'],
-                  'price' => $row['price'],
-                  'description' => $row['description'],
-                  'image' => $row['image']
-            );
-      }
+}
+$result = mysqli_query($conn, $sql);
+while ($row = mysqli_fetch_assoc($result)) {
+      $array[] = array(
+            'id_product' => $row['id_product'],
+            'name' => $row['name'],
+            'price' => $row['price'],
+            'description' => $row['description'],
+            'image' => $row['image']
+      );
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
       if (isset($_POST['action']) && $_POST['action'] == "delete" && isset($_POST['idProduct']) && is_numeric($_POST['idProduct']) == 1){
@@ -48,6 +52,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       
       <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
       <link href="/assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+      
+      <link href="/assets/vendor/fontawesome/css/fontawesome.css" rel="stylesheet">
+      <link href="/assets/vendor/fontawesome/css/solid.css" rel="stylesheet">
 
       <!-- Main Files CSS -->
       <link href="/assets/css/style.css" rel="stylesheet">
@@ -91,9 +98,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </ul>
                                 </li>
                               </ul>
-                              <form class="d-flex">
-                                <input class="form-control me-2" type="search" placeholder="Type something here" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
+                              <form action="all-product.php" method="post" class="d-flex">
+                                <input class="form-control me-2" type="text" name="search-term" placeholder="Type something here" aria-label="Search">
+                                <button class="btn btn-outline-success" type="submit"><i class="fas fa-search"></i></button>
                               </form>
                             </div>
                   </div>
@@ -102,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
       <section id="main-all-product" class="main-all-product">
             <div class="container">
-                  <h3 class="text-uppercase">All Products</h3>
+                  <h3 class="text-uppercase"><?php echo $Title ?></h3>
                   <div class="products-list">
                         <table class="table table-striped table-hover">
                               <thead>
