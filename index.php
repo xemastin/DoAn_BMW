@@ -2,18 +2,21 @@
 include 'theme/dbConection.php';
 session_start();
 $array = array();
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
+if (isset($_POST['search-term'])) {
+      $postsTitle = "You searched for '" . $_POST['search-term'] . "'";
+      $sql = "SELECT * FROM product WHERE name LIKE '%".$_POST['search-term']."%'";
+      } else {
       $sql = "SELECT * FROM product";
-      $result = mysqli_query($conn, $sql);
-      while ($row = mysqli_fetch_assoc($result)) {
-            $array[] = array(
-                  'id_product' => $row['id_product'],
-                  'name' => $row['name'],
-                  'price' => $row['price'],
-                  'description' => $row['description'],
-                  'image' => $row['image']
-            );
-      }
+}
+$result = mysqli_query($conn, $sql);
+while ($row = mysqli_fetch_assoc($result)) {
+      $array[] = array(
+            'id_product' => $row['id_product'],
+            'name' => $row['name'],
+            'price' => $row['price'],
+            'description' => $row['description'],
+            'image' => $row['image']
+      );
 }
 ?>
 
@@ -34,6 +37,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
       
       <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
       <link href="/assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+      
+      <link href="/assets/vendor/fontawesome/css/fontawesome.css" rel="stylesheet">
+      <link href="/assets/vendor/fontawesome/css/solid.css" rel="stylesheet">
 
       <!-- Main Files CSS -->
       <link href="/assets/css/style.css" rel="stylesheet">
@@ -81,9 +87,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                     </ul>
                                 </li>
                               </ul>
-                              <form class="d-flex">
-                                <input class="form-control me-2" type="search" placeholder="Type something here" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
+                              <form action="index.php" method="post" class="d-flex">
+                                <input class="form-control me-2" type="text" name="search-term" placeholder="Type something here" aria-label="Search">
+                                <button class="btn btn-outline-success" type="submit"><i class="fas fa-search"></i></button>
                               </form>
                             </div>
                   </div>
