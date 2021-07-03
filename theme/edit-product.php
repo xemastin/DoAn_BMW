@@ -9,11 +9,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
       $result = mysqli_query($conn, $sql);
       while ($row = mysqli_fetch_assoc($result)) {
             $array[] = array(
-                  'id_product' => $row['id_product'],
-                  'name' => $row['name'],
-                  'price' => $row['price'],
-                  'description' => $row['description'],
-                  'nameImage' => $row['nameImage'],
+                  'id_product' => htmlspecialchars($row['id_product']),
+                  'name' => htmlspecialchars($row['name']),
+                  'price' => htmlspecialchars($row['price']),
+                  'description' => htmlspecialchars($row['description']),
+                  'nameImage' => htmlspecialchars($row['nameImage']),
                   'image' => $row['image']
             );
       }

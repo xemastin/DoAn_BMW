@@ -10,15 +10,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             //Lấy thông tin của sản phẩm
             $row = $result->fetch_assoc();
             $array[] = array(
-                'id_product' => $row['id_product'],
-                'name' => $row['name'],
-                'price' => $row['price'],
-                'description' => $row['description'],
+                'id_product' => htmlspecialchars($row['id_product']),
+                'name' => htmlspecialchars($row['name']),
+                'price' => htmlspecialchars($row['price']),
+                'description' => htmlspecialchars($row['description']),
                 'image' => $row['image']
             );
 
             //Đọc comment của sản phẩm đang xem
-            $sql = "SELECT * FROM comment WHERE idProduct=" . $_GET['id'] . "";
+            $sql = "SELECT * FROM comment WHERE idProduct=" . $_GET['id'] . " ORDER BY `idComment` DESC";
             $result =  mysqli_query($conn, $sql);
             while ($row = mysqli_fetch_assoc($result)) {
             $arrayComment[] = array(

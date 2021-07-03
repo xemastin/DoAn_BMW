@@ -21,8 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
       $sql = "SELECT * FROM user WHERE email='".$_POST['email']."' OR username='".$_POST["username"]."'";
       $result = $conn->query($sql);
       if ($result->num_rows > 0) {
-            echo "Username hoặc Email đã có người sử dụng";
-            die();
+            $message = "Username hoặc Email đã có người sử dụng";
       }
       else{
       $sql = "INSERT INTO user(fullName,email,username,password,position) 
@@ -135,10 +134,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                                     </ul>
                                 </li>
                               </ul>
-                              <form class="d-flex">
-                                <input class="form-control me-2" type="search" placeholder="Type something here" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                              </form>
                             </div>
                   </div>
             </div>
@@ -156,12 +151,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                   </div>
             
             <form id="register" method="POST" action="" onsubmit="return stopSubmit()">
-                <input class="form-control mb-3" type="text" name="fullName" placeholder="Fullname">
-                <input class="form-control mb-3" type="email" id="email" name="email" placeholder="Email Address">
-                <input class="form-control mb-3" type="text" name="username" placeholder="Username">
-                <input class="form-control mb-3" name="password" id="password" type="password" placeholder="Password">
-                <input class="form-control mb-3" name="re_password" id="re_password" type="password" placeholder="Repeat Password">
-                <button class="btn btn-outline-success text-uppercase fw-bold w-100">Sign Up</button>
+                  <input class="form-control mb-3" type="text" name="fullName" placeholder="Fullname">
+                  <input class="form-control mb-3" type="email" id="email" name="email" placeholder="Email Address">
+                  <input class="form-control mb-3" type="text" name="username" placeholder="Username">
+                  <input class="form-control mb-3" name="password" id="password" type="password" placeholder="Password">
+                  <input class="form-control mb-3" name="re_password" id="re_password" type="password" placeholder="Repeat Password">
+                  <?php if (isset($message)){?> <div class="alert alert-danger" role="alert"><?php echo $message ?></div><?php } ?>
+                  <button class="btn btn-outline-success text-uppercase fw-bold w-100">Sign Up</button>
             </form>
             </div>
       </section>
