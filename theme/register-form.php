@@ -45,43 +45,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
      
       <title>LAPTOP STORE</title>
       <link href="/assets/image/favicon-16x16.png" rel="icon">
- <!--valid confirm password-->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-      <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"
-            type="text/javascript"></script>
+      <!--valid confirm password-->
+       <script src="/assets/vendor/jquery/jquery.min.js"></script>
+      <script src="/assets/vendor/jquery/jquery.validate.min.js" type="text/javascript"></script>
             
       <script>
            $().ready(function () {
-            $("#register").validate({
+                $("#register").validate({
 
-                rules: {
-                    fullName:
-                    {
-                        required: true,
-                        minlength: 5
+                    rules: {
+                        fullName:
+                        {
+                            required: true,
+                            minlength: 5
+                        },
+                        email: {
+                            required: true,
+                            email: true
+                        },
+                        username:
+                        {
+                            required: true,
+                            minlength:5
+                        },
+                        password: {
+                            required: true,
+                            minlength: 5
+                        },
+                        re_password: {
+                            required: true,
+                            minlength: 5,
+                            equalTo: "#password"
+                        }
                     },
-                    email: {
-                        required: true,
-                        email: true
-                    },
-                    username:
-                    {
-                        required: true,
-                        minlength:5
-                    },
-                    password: {
-                        required: true,
-                        minlength: 5
-                    },
-                    re_password: {
-                        required: true,
-                        minlength: 5,
-                        equalTo: "#password"
-                    }
-                },
-            }
-            )
-        })
+                }
+                )
+           })
     </script>
       <!-- Google Fonts -->
       <link rel="preconnect" href="https://fonts.googleapis.com">
