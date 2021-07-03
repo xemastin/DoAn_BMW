@@ -58,7 +58,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 rules: {
                     fullName:
                     {
-                        required:true
+                        required: true,
+                        minlength: 5
                     },
                     email: {
                         required: true,
