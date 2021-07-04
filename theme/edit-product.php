@@ -5,6 +5,9 @@ if ((isset($_SESSION["position"]) && $_SESSION["position"] == 2)) {
       header("Location: http://" . $_SERVER['HTTP_HOST'] . "/index.php");
 }
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
+      if (isset($_GET["id"]) && is_numeric($_GET["id"]) != 1){
+            header("Location: http://" . $_SERVER['HTTP_HOST'] . "/theme/edit-product.php");
+      }
       $sql = "SELECT * FROM product WHERE id_product=" . $_GET["id"];
       $result = mysqli_query($conn, $sql);
       while ($row = mysqli_fetch_assoc($result)) {

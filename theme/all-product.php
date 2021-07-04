@@ -7,8 +7,15 @@ if ((isset($_SESSION["position"]) && $_SESSION["position"] == 2)){
 $array = array();
 $Title="All proudcts";
 if (isset($_POST['search-term'])) {
-      $Title = "You searched for '" . $_POST['search-term'] . "'";
+      $postsTitle = "You searched for '" . $_POST['search-term'] . "'";
+      if ($_POST['search-term'] != "'"){
+            $search = str_replace("'", ' ', $_POST['search-term']);
+            $sql = "SELECT * FROM product WHERE name LIKE '%".$search."%'";
+      }else{
+            $sql = "SELECT * FROM product WHERE 0=1";
+      }
       $sql = "SELECT * FROM product WHERE name LIKE '%".$_POST['search-term']."%'";
+      echo $sql;
       } else {
       $sql = "SELECT * FROM product";
 }

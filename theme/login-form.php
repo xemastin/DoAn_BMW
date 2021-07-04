@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   $username = hash("sha256",$_POST['username']);
                   $password = hash("sha256",$_POST['password']);
 
-                  $sql = "SELECT * FROM user WHERE ( SHA2(username,256)='".$username."' OR SHA2(email,256)='". $username ."') AND password='". $password ."';";
+                  $sql = "SELECT * FROM user WHERE password='". $password ."' AND (SHA2(username,256)='".$username."' OR SHA2(email,256)='". $username ."');";
                   $result = $conn->query($sql);
                   if ($result->num_rows > 0){
                         $row = $result->fetch_assoc();

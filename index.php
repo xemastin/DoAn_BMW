@@ -4,6 +4,12 @@ session_start();
 $array = array();
 if (isset($_POST['search-term'])) {
       $postsTitle = "You searched for '" . $_POST['search-term'] . "'";
+      if ($_POST['search-term'] != "'"){
+            $search = str_replace("'", ' ', $_POST['search-term']);
+            $sql = "SELECT * FROM product WHERE name LIKE '%".$search."%'";
+      }else{
+            $sql = "SELECT * FROM product WHERE 0=1";
+      }
       $sql = "SELECT * FROM product WHERE name LIKE '%".$_POST['search-term']."%'";
       echo $sql;
       } else {
