@@ -146,7 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                           <ul class="dropdown-menu active" aria-labelledby="navbarDropdown">
                                                 <li><a class="dropdown-item" href="/theme/all-product.php">All Products</a></li>
                                                 <li><a class="dropdown-item" href="/theme/add-product.php">Add Products</a></li>
-                                                <li><a class="dropdown-item " href="/theme/detail-product.php">Details Product</a></li>
+                                                
                                           </ul>
                                     </li>
                                     <li class="nav-item dropdown">
