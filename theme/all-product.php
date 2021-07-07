@@ -100,7 +100,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                       User
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownUser">
-                                      <li><a class="dropdown-item" href="/theme/login-form.php">Login</a></li>
+                                      <li><?php if (isset($_SESSION["name"]) && isset($_SESSION["position"])) { ?>
+                                        <a class="dropdown-item" href="/theme/logout.php">Logout</a>
+                                    <?php } else { ?>
+                                        <a class="dropdown-item" href="/theme/login-form.php">Login</a>
+                                    <?php } ?></li>
                                       <li><a class="dropdown-item" href="/theme/register-form.php">Register</a></li>
                                     </ul>
                                 </li>

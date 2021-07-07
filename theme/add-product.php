@@ -1,11 +1,20 @@
-<?php 
+<?php
 include 'dbConection.php';
 session_start();
 if (!(isset($_SESSION["position"]) && $_SESSION["position"] == 1)){
       header("Location: http://".$_SERVER['HTTP_HOST']."/index.php");
 }
 
+if ($_SERVER["REQUEST_METHOD"] == "GET"){
+      $csrf_token = csrf_token_tag();
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+      if (isset($_POST["csrf_token"]) && $_POST["csrf_token"] === $_SESSION['csrf_token']){
+
+      }else{
+            header("Location: http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+      }
       if (empty($_POST["nameProduct"])){
             header("Location: http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
       }
@@ -126,6 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <h3 class="text-uppercase">Add Product</h3>
                   <div class="add-product-form">
                         <form action="" method="POST" enctype="multipart/form-data">
+                              <?php echo $csrf_token ?>
                               <div class="row mb-3">
                                     <div class="col-2 col-sm-2">
                                           <label class="form-label text-uppercase fw-bold">Name</label>

@@ -5,27 +5,37 @@ if (!(isset($_SESSION["position"]) && $_SESSION["position"] == 1)) {
       header("Location: http://" . $_SERVER['HTTP_HOST'] . "/index.php");
 }
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-      if (isset($_GET["id"]) && is_numeric($_GET["id"]) != 1){
+      $csrf_token = csrf_token_tag();
+      if (isset($_GET["id"]) && is_numeric($_GET["id"]) != 1) {
             header("Location: http://" . $_SERVER['HTTP_HOST'] . "/theme/edit-product.php");
       }
-      $sql = "SELECT * FROM product WHERE id_product=" . $_GET["id"];
-      $result = mysqli_query($conn, $sql);
-      while ($row = mysqli_fetch_assoc($result)) {
+      $sql = "SELECT id_product, name,price,description,nameImage FROM product WHERE id_product=?";
+      $stmt = mysqli_prepare($conn, $sql);
+      mysqli_stmt_bind_param($stmt, "s", $_GET['id']);
+      mysqli_stmt_execute($stmt);
+      mysqli_stmt_store_result($stmt);
+      if (mysqli_stmt_num_rows($stmt) > 0) {
+            //Lấy thông tin của sản phẩm
+            mysqli_stmt_bind_result($stmt, $id_product, $name, $price, $description, $nameImage);
+            mysqli_stmt_fetch($stmt);
             $array[] = array(
-                  'id_product' => htmlspecialchars($row['id_product']),
-                  'name' => htmlspecialchars($row['name']),
-                  'price' => htmlspecialchars($row['price']),
-                  'description' => htmlspecialchars($row['description']),
-                  'nameImage' => htmlspecialchars($row['nameImage']),
-                  'image' => $row['image']
+                  'id_product' => htmlspecialchars($id_product),
+                  'name' => htmlspecialchars($name),
+                  'price' => htmlspecialchars($price),
+                  'description' => htmlspecialchars($description),
+                  'nameImage' => htmlspecialchars($nameImage)
             );
       }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+      if (isset($_POST["csrf_token"]) && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
+      } else {
+            header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+      }
       if (empty($_POST['idProduct'])) {
             header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-            die;  
+            die;
       } else {
 
             $id_products = $_POST['idProduct'];
@@ -69,9 +79,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                   move_uploaded_file($_FILES['imageProduct']['tmp_name'], dirname(getcwd(), 1) . "\\assets\\Uploads\\" . $_FILES['imageProduct']['name']);
 
-                  if (exif_imagetype(dirname(getcwd(),1)."\\assets\\Uploads\\".$_FILES['imageProduct']['name']) == false){
-                        delete_files(dirname(getcwd(),1)."\\assets\\Uploads");
-                        header("Location: http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+                  if (exif_imagetype(dirname(getcwd(), 1) . "\\assets\\Uploads\\" . $_FILES['imageProduct']['name']) == false) {
+                        delete_files(dirname(getcwd(), 1) . "\\assets\\Uploads");
+                        header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
                         die();
                   }
 
@@ -164,6 +174,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <h3 class="text-uppercase">Edit Product</h3>
                   <div class="add-product-form">
                         <form action="" method="POST" enctype="multipart/form-data">
+                              <?php echo $csrf_token ?>
                               <div class="row mb-3">
                                     <div class="col-2 col-sm-2">
                                           <label class="form-label text-uppercase fw-bold">Name</label>

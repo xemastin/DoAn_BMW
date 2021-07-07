@@ -23,3 +23,18 @@ function delete_files($target) {
         unlink( $target );  
     }
 }
+
+function csrf_token() {
+    return bin2hex(random_bytes(35));
+}
+
+function create_csrf_token() {
+    $token = csrf_token();
+    $_SESSION['csrf_token'] = $token;
+    return $token;
+}
+
+function csrf_token_tag() {
+    $token = create_csrf_token();
+    return '<input type="hidden" name="csrf_token" value="' . $token . '">';
+}
