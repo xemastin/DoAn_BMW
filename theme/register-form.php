@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $sql = "SELECT * FROM user WHERE email=? OR username=?";
       $stmt = mysqli_prepare($conn, $sql);
       mysqli_stmt_bind_param($stmt, "ss",$_POST["email"], $_POST["username"]);
-      if (mysqli_stmt_num_rows($stmt) == 0) 
+      if (mysqli_stmt_num_rows($stmt) != 0) 
       {
         $message = "Username hoặc Email đã có người sử dụng";
       }

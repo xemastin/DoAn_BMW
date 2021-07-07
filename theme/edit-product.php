@@ -73,19 +73,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!empty($_FILES['imageProduct']['name'])) {
                   $image_name = $_FILES['imageProduct']['name'];
 
-                  if (!file_exists(dirname(getcwd(), 1) . "\\assets\\Uploads")) {
-                        mkdir(dirname(getcwd(), 1) . "\\assets\\Uploads", 0777);
+                  if (!file_exists(dirname(getcwd(), 1) . "/assets/Uploads")) {
+                        mkdir(dirname(getcwd(), 1) . "/assets/Uploads", 0777);
                   }
 
-                  move_uploaded_file($_FILES['imageProduct']['tmp_name'], dirname(getcwd(), 1) . "\\assets\\Uploads\\" . $_FILES['imageProduct']['name']);
+                  move_uploaded_file($_FILES['imageProduct']['tmp_name'], dirname(getcwd(), 1) . "/assets/Uploads/" . $_FILES['imageProduct']['name']);
 
-                  if (exif_imagetype(dirname(getcwd(), 1) . "\\assets\\Uploads\\" . $_FILES['imageProduct']['name']) == false) {
-                        delete_files(dirname(getcwd(), 1) . "\\assets\\Uploads");
+                  if (exif_imagetype(dirname(getcwd(), 1) . "/assets/Uploads/" . $_FILES['imageProduct']['name']) == false) {
+                        delete_files(dirname(getcwd(), 1) . "/assets/Uploads");
                         header("Location: http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
                         die();
                   }
 
-                  $image_file = file_get_contents(dirname(getcwd(), 1) . "\\assets\\Uploads\\" . $_FILES['imageProduct']['name']);
+                  $image_file = file_get_contents(dirname(getcwd(), 1) . "/assets/Uploads/" . $_FILES['imageProduct']['name']);
 
                   $sql = "UPDATE product SET nameImage=?,image=? WHERE id_product=?";
                   $stmt = mysqli_prepare($conn, $sql);

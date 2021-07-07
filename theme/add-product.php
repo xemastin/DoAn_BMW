@@ -29,20 +29,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $description = $_POST["descriptionProduct"];
       $image_name = $_FILES['imageProduct']['name'];
 
-      if (!file_exists(dirname(getcwd(),1)."\\assets\\Uploads")){
-            mkdir(dirname(getcwd(),1)."\\assets\\Uploads", 0777);
+      if (!file_exists(dirname(getcwd(),1)."/assets/Uploads")){
+            mkdir(dirname(getcwd(),1)."/assets/Uploads", 0777);
       }
 
       
-      move_uploaded_file($_FILES['imageProduct']['tmp_name'], dirname(getcwd(),1)."\\assets\\Uploads\\".$_FILES['imageProduct']['name']);
+      move_uploaded_file($_FILES['imageProduct']['tmp_name'], dirname(getcwd(),1)."/assets/Uploads/".$_FILES['imageProduct']['name']);
 
-      if (exif_imagetype(dirname(getcwd(),1)."\\assets\\Uploads\\".$_FILES['imageProduct']['name']) == false){
-            delete_files(dirname(getcwd(),1)."\\assets\\Uploads");
+      if (exif_imagetype(dirname(getcwd(),1)."/assets/Uploads/".$_FILES['imageProduct']['name']) == false){
+            delete_files(dirname(getcwd(),1)."/assets/Uploads");
             header("Location: http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
             die();
       }
 
-      $image_file = file_get_contents(dirname(getcwd(),1)."\\assets\\Uploads\\".$_FILES['imageProduct']['name']);
+      $image_file = file_get_contents(dirname(getcwd(),1)."/assets/Uploads/".$_FILES['imageProduct']['name']);
       $sql = "insert into product(name,price,description,nameImage,image)
        values(?,?,?,?,?)";
 
@@ -52,11 +52,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
       $check = mysqli_stmt_affected_rows($stmt);
       if($check==1){
-            delete_files(dirname(getcwd(),1)."\\assets\\Uploads");
+            delete_files(dirname(getcwd(),1)."/assets/Uploads");
             header("Location: http://".$_SERVER['HTTP_HOST']."/theme/all-product.php");
             die();
       }else{
-            delete_files(dirname(getcwd(),1)."\\assets\\Uploads");
+            delete_files(dirname(getcwd(),1)."/assets/Uploads");
             $msg = $stmt->error;
       }
       echo $msg;

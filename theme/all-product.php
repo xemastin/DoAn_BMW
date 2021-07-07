@@ -14,8 +14,6 @@ if (isset($_POST['search-term'])) {
       }else{
             $sql = "SELECT * FROM product WHERE 0=1";
       }
-      $sql = "SELECT * FROM product WHERE name LIKE '%".$_POST['search-term']."%'";
-      echo $sql;
       } else {
       $sql = "SELECT * FROM product";
 }
