@@ -1,6 +1,15 @@
 <?php 
 include 'dbConection.php';
 session_start();
+if ( isset($_SESSION['wrongTime']) && $_SESSION['wrongTime'] > 5 ) $_SESSION['blockTime'] = time();
+if ( isset($_SESSION['blockTime']) && time() - $_SESSION['blockTime'] < 3600 ) {
+      echo "Stop brute force right now!!!";
+      die();
+}
+if ( isset($_SESSION['blockTime']) && time() - $_SESSION['blockTime'] > 3600 ) {
+      unset($_SESSION['blockTime']);
+      unset($_SESSION['wrongTime']);
+}
 if ($_SERVER["REQUEST_METHOD"] == "POST") { 
       if (isset($_POST['username']))
             if (isset($_POST['password'])){
@@ -18,6 +27,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   }else{
                         unset($_SESSION["name"]);
                         unset($_SESSION["position"]);
+                        if ( isset($_SESSION['wrongTime']) ){
+                              $_SESSION['wrongTime'] += 1;
+                        }else{
+                              $_SESSION['wrongTime'] = 1;
+                        }
                   }
             }
 }
