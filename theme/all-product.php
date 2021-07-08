@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
       <section id="main-all-product" class="main-all-product">
             <div class="container">
-                  <h3 class="text-uppercase"><?php echo $Title ?></h3>
+                  <h3 class="text-uppercase"><?php echo $postsTitle ?></h3>
                   <div class="products-list">
                         <table class="table table-striped table-hover">
                               <thead>
