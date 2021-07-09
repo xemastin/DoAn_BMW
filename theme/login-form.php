@@ -3,7 +3,7 @@ include 'dbConection.php';
 session_start();
 if ( isset($_SESSION['wrongTime']) && $_SESSION['wrongTime'] > 5 ) $_SESSION['blockTime'] = time();
 if ( isset($_SESSION['blockTime']) && time() - $_SESSION['blockTime'] < 3600 ) {
-      echo "Stop brute force right now!!!";
+      echo "Stop brute-force right now!!!";
       die();
 }
 if ( isset($_SESSION['blockTime']) && time() - $_SESSION['blockTime'] > 3600 ) {
